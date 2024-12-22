@@ -13,3 +13,10 @@
 - 客户端方式 XSRF，跨站请求攻击
 
 ## 使用的技术
+
+1. 使用 express 开启一个服务，并使用 webpack 进行打包，其中还使用 express.Router 提供接口
+
+## 一些自己可以做的后续工作
+
+1. 将 examples 内的 dev 服务改为 vite
+2.

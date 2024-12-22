@@ -7,3 +7,8 @@ export const isDate = (val: any): val is Date => {
 export const isObject = (val: any): val is Object => {
   return val !== null && typeof val === "object";
 };
+
+// val is Object 是类型位词
+export const isPlainObject = (val: any): val is Object => {
+  return toString.call(val) === "[object Object]";
+};

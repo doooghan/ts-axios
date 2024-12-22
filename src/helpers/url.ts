@@ -45,13 +45,12 @@ export const buildURL = (url: string, params: any): string => {
   let serializedParams = parts.join("&");
 
   if (serializedParams) {
-    // if(serializedParams)
     const markIndex = url.indexOf("#");
     if (markIndex !== -1) {
       url = url.slice(0, markIndex);
     }
 
-    url += url.indexOf("?") === -1 ? "?" : "&" + serializedParams;
+    url += (url.indexOf("?") === -1 ? "?" : "&") + serializedParams;
   }
 
   return url;

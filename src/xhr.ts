@@ -1,5 +1,5 @@
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from "./types";
-
+import { parseHeaders } from "./helpers/headers";
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve) => {
     const { data = null, method = "get", url, headers, responseType } = config;
@@ -17,7 +17,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         return;
       }
 
-      const responseHeader = request.getAllResponseHeaders();
+      const responseHeader = parseHeaders(request.getAllResponseHeaders());
       const responseData = responseType && responseType === "text" ? request.responseText : request.response;
       const response: AxiosResponse = {
         data: responseData,

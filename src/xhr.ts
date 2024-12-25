@@ -21,6 +21,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         return;
       }
 
+      if (request.status === 0) {
+        return;
+      }
+
       const responseHeader = parseHeaders(request.getAllResponseHeaders());
       const responseData = responseType && responseType === "text" ? request.responseText : request.response;
       const response: AxiosResponse = {
@@ -31,7 +35,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         config,
         request,
       };
-      resolve(response);
+      handleResponse(response);
     };
 
     request.onerror = () => {
@@ -51,5 +55,14 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     });
 
     request.send(data);
+
+    const handleResponse = (response: AxiosResponse): void => {
+      // return
+      if (response.status >= 200 && response.status < 300) {
+        resolve(response);
+      } else {
+        reject(new Error(`Request failed with status code ${response.status}`));
+      }
+    };
   });
 }

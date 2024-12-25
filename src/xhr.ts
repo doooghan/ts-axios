@@ -1,7 +1,7 @@
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from "./types";
 import { parseHeaders } from "./helpers/headers";
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const { data = null, method = "get", url, headers, responseType } = config;
 
     const request = new XMLHttpRequest();
@@ -29,6 +29,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       };
       resolve(response);
     };
+
+    request.onerror = ()=>{
+      reject(new Error('Network Error'))
+    }
 
     Object.keys(headers).forEach((name) => {
       if (data === null && name.toLowerCase() === "content-type") {

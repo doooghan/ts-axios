@@ -2,12 +2,16 @@ import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from "./types";
 import { parseHeaders } from "./helpers/headers";
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { data = null, method = "get", url, headers, responseType } = config;
+    const { data = null, method = "get", url, headers, responseType, timeout } = config;
 
     const request = new XMLHttpRequest();
 
     if (responseType) {
       request.responseType = responseType;
+    }
+
+    if (timeout) {
+      request.timeout = timeout;
     }
 
     request.open(method.toLocaleUpperCase(), url, true);
@@ -30,9 +34,13 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       resolve(response);
     };
 
-    request.onerror = ()=>{
-      reject(new Error('Network Error'))
-    }
+    request.onerror = () => {
+      reject(new Error("Network Error"));
+    };
+
+    request.ontimeout = () => {
+      reject(new Error(`Timeout of ${timeout} ms exceeded`));
+    };
 
     Object.keys(headers).forEach((name) => {
       if (data === null && name.toLowerCase() === "content-type") {
